@@ -12,6 +12,7 @@
           </div>
         </div>
       </div>
+      <p>符合选择的产品：{{ checkGoods }}</p>
     </div>
   </div>
 </template>
@@ -25,6 +26,7 @@ export default {
     return {
       res: {},
       goodsPs: [], // 产品幂集
+      checkGoods: [], // 选中的产品
       checkNowRow: 0, // 点击规格所在行
       checkNowColumn: 0, // 点击规格所在列
       checkItemList: [], // 已选中规格
@@ -33,52 +35,52 @@ export default {
         {
           name: '颜色',
           list: [
-            {name: '红', check: false, disabled: false, noClick: true},
-            {name: '白', check: false, disabled: false, noClick: true},
-            {name: '蓝', check: false, disabled: false, noClick: true}
+            {name: '红', value:'1红', check: false, disabled: false, noClick: true},
+            {name: '白', value:'1白', check: false, disabled: false, noClick: true},
+            {name: '蓝', value:'1蓝', check: false, disabled: false, noClick: true}
           ]
         },
         {
           name: '尺码',
           list: [
-            {name: '大', check: false, disabled: false, noClick: true},
-            {name: '中', check: false, disabled: false, noClick: true},
-            {name: '小', check: false, disabled: false, noClick: true}
+            {name: '大', value:'1大', check: false, disabled: false, noClick: true},
+            {name: '中', value:'1中', check: false, disabled: false, noClick: true},
+            {name: '小', value:'1小', check: false, disabled: false, noClick: true}
           ]
         },
         {
           name: '型号',
           list: [
-            {name: 'A', check: false, disabled: false, noClick: true},
-            {name: 'B', check: false, disabled: false, noClick: true},
-            {name: 'C', check: false, disabled: false, noClick: true}
+            {name: 'A', value:'1A', check: false, disabled: false, noClick: true},
+            {name: 'B', value:'1B', check: false, disabled: false, noClick: true},
+            {name: 'C', value:'1C', check: false, disabled: false, noClick: true}
           ]
         }
       ],
       goods: [
         {
-          skuId: '3158054',
-          tag: ['红', '大', 'A']
+          skuId: '100001',
+          tag: ['1红', '1大', '1A']
         },
         {
-          skuId: '3158055',
-          tag: ['红', '大', 'B']
+          skuId: '100002',
+          tag: ['1红', '1大', '1B']
         },
         {
-          skuId: '3158055',
-          tag: ['红', '中', 'B']
+          skuId: '100003',
+          tag: ['1红', '1中', '1B']
         },
         {
-          skuId: '3133859',
-          tag: ['白', '中', 'B']
+          skuId: '100004',
+          tag: ['1白', '1中', '1B']
         },
         {
-          skuId: '3133859',
-          tag: ['白', '小', 'B']
+          skuId: '100005',
+          tag: ['1白', '1小', '1B']
         },
         {
-          skuId: '3516833',
-          tag: ['白', '小', 'C']
+          skuId: '100006',
+          tag: ['1蓝', '1小', '1C']
         },
       ]
     }
@@ -146,7 +148,7 @@ export default {
       allItem = Array.from(new Set(allItem))
       this.guige.map(item => {
         item.list.map(val => {
-          if(allItem.includes(val.name)){
+          if(allItem.includes(val.value)){
             val.noClick = false
           } else {
             val.noClick = true
@@ -155,7 +157,6 @@ export default {
       })
       console.log(allItem)
     },
-
     // 点击规格
     checkItem(data, row, column) {
       this.checkNowRow = row
@@ -184,44 +185,23 @@ export default {
       this.guige.map(item => {
         item.list.map(item2 => {
           if(item2.check) {
-            this.checkItemList.push(item2.name)
+            this.checkItemList.push(item2.value)
           }
         })
       })
       this.getOnPowerSet()
+      this.selectGoods()
     },
-    // 获取选中规格对应的可选择幂集子项
+    // 设置页面显示状态
     getOnPowerSet() {
       this.showItem = []
       if(this.checkItemList.length > 1) {  // 多选流程
-/*        this.checkItemList.map((item,index) => {
-          let newArr = this.checkItemList.slice(0)
-          newArr.splice(index,1)
-          this.goodsPs.map(item => {
-            if(this.subset(item,newArr)) {
-              this.showItem = this.showItem.concat(item)
-            }
-          })
-        })
-        this.checkItemList.map((item,index) => {
-          let newArr = this.checkItemList.slice(0)
-          newArr.splice(index,1)
-          this.goodsPs.map(item => {
-            if(this.subset(item,newArr)) {
-              this.showItem = this.showItem.concat(item)
-              console.log('单项')
-              console.log(item)
-            }
-          })
-        })*/
-        console.log(this.goodsPs)
         this.guige.map((item, row) => {
-          console.log(`${row}行str------------------------`)
           let showItem = []
           // 判断行是否有选中数据
           let lineCheck = false
           item.list.map((item2, col) => {
-            if(item2.check) lineCheck = item2.name
+            if(item2.check) lineCheck = item2.value
           })
 
           // 取非当前行的其他选中数据or 全部数据
@@ -229,56 +209,19 @@ export default {
           if(lineCheck) {
             newArr.splice(newArr.indexOf(lineCheck), 1)
           }
-          // console.log(newArr)
           this.goodsPs.map(gItem => {
             if (this.subset(gItem, newArr)) {
               showItem = showItem.concat(gItem)
             }
           })
-          console.log('集合')
           showItem = Array.from(new Set(showItem))
-          console.log(showItem)
           item.list.map(item2 => {
-            if(showItem.indexOf(item2.name) !== -1) {
-              console.log('显示')
-              console.log(item2.name)
+            if(showItem.indexOf(item2.value) !== -1) {
               item2.disabled = false
             } else {
               item2.disabled = true
             }
           })
-          // showItem = Array.from(new Set(showItem))
-          // console.log(showItem)
-
-
-
-        /*  this.checkItemList.map((checkItem,index) => {
-            let newArr = this.checkItemList.slice(0)
-            if(lineCheck) {
-              newArr.splice(newArr.indexOf(lineCheck), 1)
-            }
-            console.log('')
-            console.log(newArr)
-            this.goodsPs.map(gPsItem => {
-              if (this.subset(gPsItem, newArr)) {
-                showItem = this.showItem.concat(gPsItem)
-              }
-            })
-            showItem = Array.from(new Set(showItem))
-            console.log(showItem)
-
-
-
-/!*
-            this.goodsPs.map(item => {
-              if(this.subset(item,newArr)) {
-                this.showItem = this.showItem.concat(item)
-                console.log('单项')
-                console.log(item)
-              }
-            })*!/
-          })*/
-          console.log(`${row}行end------------------------`)
         })
 
       } else { // 单选流程
@@ -288,26 +231,26 @@ export default {
           }
         })
         this.guige[this.checkNowRow].list.map(item => {
-          this.showItem.push(item.name)
+          this.showItem.push(item.value)
         })
         this.showItem = Array.from(new Set(this.showItem))
-        this.showItemFn()
-      }
-    },
-    // 设置页面按钮状态
-    showItemFn() {
-      console.log('显示的规格')
-      console.log(this.showItem)
-      console.log('-----------------')
-      this.guige.map(item => {
-        item.list.map(val => {
-          if(this.showItem.includes(val.name)){
-            val.disabled=false
-          } else {
-            val.disabled=true
-          }
+        this.guige.map(item => {
+          item.list.map(val => {
+            if(this.showItem.includes(val.value)){
+              val.disabled=false
+            } else {
+              val.disabled=true
+            }
+          })
         })
-      })
+      }
+      console.log('已选中')
+      console.log(this.checkItemList)
+    },
+    // 获取规格对应的商品
+    selectGoods() {
+      let checkItem = this.checkItemList.join(',')
+      this.checkGoods = this.res[checkItem].splice(',')
     }
   },
   created() {
