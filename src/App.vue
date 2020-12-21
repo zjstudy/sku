@@ -43,44 +43,44 @@ export default {
         {
           name: '尺码',
           list: [
-            {name: '大', value:'1大', check: false, disabled: false, noClick: true},
-            {name: '中', value:'1中', check: false, disabled: false, noClick: true},
-            {name: '小', value:'1小', check: false, disabled: false, noClick: true}
+            {name: '大', value:'2大', check: false, disabled: false, noClick: true},
+            {name: '中', value:'2中', check: false, disabled: false, noClick: true},
+            {name: '小', value:'2小', check: false, disabled: false, noClick: true}
           ]
         },
         {
           name: '型号',
           list: [
-            {name: 'A', value:'1A', check: false, disabled: false, noClick: true},
-            {name: 'B', value:'1B', check: false, disabled: false, noClick: true},
-            {name: 'C', value:'1C', check: false, disabled: false, noClick: true}
+            {name: 'A', value:'3A', check: false, disabled: false, noClick: true},
+            {name: 'B', value:'3B', check: false, disabled: false, noClick: true},
+            {name: 'C', value:'3C', check: false, disabled: false, noClick: true}
           ]
         }
       ],
       goods: [
         {
           skuId: '100001',
-          tag: ['1红', '1大', '1A']
+          tag: ['1红', '2大', '3A']
         },
         {
           skuId: '100002',
-          tag: ['1红', '1大', '1B']
+          tag: ['1红', '2大', '3B']
         },
         {
           skuId: '100003',
-          tag: ['1红', '1中', '1B']
+          tag: ['1红', '2中', '3B']
         },
         {
           skuId: '100004',
-          tag: ['1白', '1中', '1B']
+          tag: ['1白', '2中', '3B']
         },
         {
           skuId: '100005',
-          tag: ['1白', '1小', '1B']
+          tag: ['1白', '2小', '3B']
         },
         {
           skuId: '100006',
-          tag: ['1蓝', '1小', '1C']
+          tag: ['1蓝', '2小', '3C']
         },
       ]
     }
