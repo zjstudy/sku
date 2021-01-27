@@ -24,7 +24,7 @@ export default {
   components: {},
   data() {
     return {
-      res: {},
+      res: {}, // 产品幂集子项对应的规格列表
       goodsPs: [], // 产品幂集
       checkGoods: [], // 选中的产品
       checkNowRow: 0, // 点击规格所在行
@@ -59,27 +59,27 @@ export default {
       ],
       goods: [
         {
-          skuId: '100001',
+          id: '100001',
           tag: ['1红', '2大', '3A']
         },
         {
-          skuId: '100002',
+          id: '100002',
           tag: ['1红', '2大', '3B']
         },
         {
-          skuId: '100003',
+          id: '100003',
           tag: ['1红', '2中', '3B']
         },
         {
-          skuId: '100004',
+          id: '100004',
           tag: ['1白', '2中', '3B']
         },
         {
-          skuId: '100005',
+          id: '100005',
           tag: ['1白', '2小', '3B']
         },
         {
-          skuId: '100006',
+          id: '100006',
           tag: ['1蓝', '2小', '3C']
         },
       ]
@@ -132,12 +132,12 @@ export default {
           if(!this.res[res_key]) {
             this.res[res_key] = []
           }
-          this.res[res_key].push(item.skuId)
+          this.res[res_key].push(item.id)
         })
         this.goodsPs = this.goodsPs.concat(newarr)
       })
       this.goodsPs = this.unique(this.goodsPs)
-      console.log(this.res)
+      console.log(this.res, 1)
       console.log(this.goodsPs)
       // 获取所有能显示的规格
       this.goodsPs.map(item => {
@@ -155,7 +155,6 @@ export default {
           }
         })
       })
-      console.log(allItem)
     },
     // 点击规格
     checkItem(data, row, column) {
@@ -244,20 +243,15 @@ export default {
           })
         })
       }
-      console.log('已选中')
-      console.log(this.checkItemList)
     },
     // 获取规格对应的商品
     selectGoods() {
       let checkItem = this.checkItemList.join(',')
-      this.checkGoods = this.res[checkItem].splice(',')
+      this.checkGoods = this.res[checkItem].join(',')
     }
   },
   created() {
     this.editGoods()
-    let a = [1,'红色1',3,4]
-    let b = [4,1,'红色']
-    console.log(this.subset(a,b))
     // console.log(this.unique(guige))
 
   }
