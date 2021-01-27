@@ -1,6 +1,6 @@
 # sku
 基于VUE的商品规格SKU
-
+![Image text](https://raw.githubusercontent.com/zjstudy/sku/master/src/assets/sku.gif)
 
 ## 启动项目
 ```
